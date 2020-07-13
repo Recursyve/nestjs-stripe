@@ -11,6 +11,11 @@ export interface StripeOptions {
 @Module({})
 export class StripeModule {
     public static forRoot(options?: StripeOptions): DynamicModule {
+        if (!options) {
+            options = {
+                config: {}
+            };
+        }
         return {
             module: StripeModule,
             providers: [
