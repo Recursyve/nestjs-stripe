@@ -1,0 +1,63 @@
+{
+    "name": "@recursyve/nestjs-stripe",
+    "version": "7.0.0-beta.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "rimraf dist && nest build",
+        "build:lib": "rimraf dist && nest build -p tsconfig.lib.json",
+        "copy:lib": "cp package.json .npmignore dist",
+        "publish-package": "npm run build:lib && npm run copy:lib && npm publish dist --access public",
+        "publish-package:beta": "npm run publish-package -- --tag beta --access public",
+        "publish-package:dry-run": "npm run publish-package -- --dry-run"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Recursyve/nestjs-stripe.git"
+    },
+    "author": "Recursyve Solutions",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Recursyve/nestjs-stripe/issues"
+    },
+    "homepage": "https://github.com/Recursyve/nestjs-stripe#readme",
+    "directories": {
+        "lib": "lib"
+    },
+    "peerDependencies": {
+        "@nestjs/common": "^7.1.0",
+        "@nestjs/core": "^7.1.0",
+        "reflect-metadata": "^0.1.13",
+        "rxjs": "^6.5.5"
+    },
+    "devDependencies": {
+        "@nestjs/common": "^7.1.0",
+        "@nestjs/core": "^7.1.0",
+        "@nestjs/platform-express": "^7.1.0",
+        "@types/jest": "^25.2.3",
+        "dotenv": "^8.2.0",
+        "jest": "^26.0.1",
+        "reflect-metadata": "^0.1.13",
+        "rimraf": "^3.0.2",
+        "rxjs": "^6.5.5",
+        "ts-jest": "^26.0.0",
+        "ts-loader": "^7.0.5",
+        "ts-node": "^8.10.1",
+        "tslint": "^6.1.2",
+        "typescript": "^3.8.3"
+    },
+    "jest": {
+        "moduleFileExtensions": [
+            "js",
+            "json",
+            "ts"
+        ],
+        "rootDir": "lib",
+        "testRegex": ".spec.ts$",
+        "transform": {
+            "^.+\\.(t|j)s$": "ts-jest"
+        },
+        "coverageDirectory": "./coverage",
+        "testEnvironment": "node"
+    }
+}
