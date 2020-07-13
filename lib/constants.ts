@@ -1,0 +1,2 @@
+export const GLOBAL_CONFIG = "__STRIPE_GLOBAL_CONFIG__";
+export const STRIPE_CLIENT = "__STRIPE_CLIENT__";
