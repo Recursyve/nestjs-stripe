@@ -28,7 +28,7 @@ export class StripeModule {
                     inject: [GLOBAL_CONFIG]
                 }
             ],
-            exports: [GLOBAL_CONFIG]
+            exports: [GLOBAL_CONFIG, STRIPE_CLIENT]
         };
     }
 }
