@@ -10,6 +10,10 @@ export class StripeCustomersService {
         return this.stripe.customers.create(dto);
     }
 
+    public update(id: string, dto?: Stripe.CustomerUpdateParams) {
+        return this.stripe.customers.update(id, dto);
+    }
+
     public retrieve<T extends (Stripe.Customer | Stripe.DeletedCustomer)>(
         id: string,
         params?: Stripe.CustomerRetrieveParams
