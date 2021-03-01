@@ -25,29 +25,29 @@
         "lib": "lib"
     },
     "dependencies": {
-        "stripe": "^8.69.0"
+        "stripe": "^8.137.0"
     },
     "peerDependencies": {
-        "@nestjs/common": "^7.1.0",
-        "@nestjs/core": "^7.1.0",
+        "@nestjs/common": "^7.0.0",
+        "@nestjs/core": "^7.0.0",
         "reflect-metadata": "^0.1.13",
-        "rxjs": "^6.5.5"
+        "rxjs": "^6.0.0"
     },
     "devDependencies": {
-        "@nestjs/common": "^7.1.0",
-        "@nestjs/core": "^7.1.0",
-        "@nestjs/platform-express": "^7.1.0",
-        "@types/jest": "^25.2.3",
+        "@nestjs/common": "^7.6.13",
+        "@nestjs/core": "^7.6.13",
+        "@nestjs/platform-express": "^7.6.13",
+        "@types/jest": "^26.0.20",
         "dotenv": "^8.2.0",
-        "jest": "^26.0.1",
+        "jest": "^26.6.3",
         "reflect-metadata": "^0.1.13",
         "rimraf": "^3.0.2",
-        "rxjs": "^6.5.5",
-        "ts-jest": "^26.0.0",
-        "ts-loader": "^7.0.5",
-        "ts-node": "^8.10.1",
-        "tslint": "^6.1.2",
-        "typescript": "^3.8.3"
+        "rxjs": "^6.6.6",
+        "ts-jest": "^26.5.2",
+        "ts-loader": "^8.0.17",
+        "ts-node": "^9.1.1",
+        "tslint": "^6.1.3",
+        "typescript": "^4.2.2"
     },
     "jest": {
         "moduleFileExtensions": [
