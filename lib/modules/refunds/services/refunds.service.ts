@@ -18,7 +18,7 @@ export class StripeRefundsService {
         return this.stripe.refunds.update(id, params);
     }
 
-    public list(id: string, params?: Stripe.RefundListParams): Stripe.ApiListPromise<Stripe.Refund> {
-        return this.stripe.refunds.list(id, params);
+    public list(params?: Stripe.RefundListParams): Stripe.ApiListPromise<Stripe.Refund> {
+        return this.stripe.refunds.list(params);
     }
 }
