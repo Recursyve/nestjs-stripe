@@ -27,8 +27,8 @@ export class StripeModule {
                     provide: STRIPE_CLIENT,
                     useFactory: (config: StripeConfigModel) => {
                         return new Stripe(config.clientSecret, {
-                            apiVersion: "2020-03-02"
-                        })
+                            apiVersion: "2020-08-27"
+                        });
                     },
                     inject: [GLOBAL_CONFIG]
                 }

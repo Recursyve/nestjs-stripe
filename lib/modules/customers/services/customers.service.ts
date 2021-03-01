@@ -4,7 +4,8 @@ import { InjectStripe } from "../../../decorators/inject-stripe";
 
 @Injectable()
 export class StripeCustomersService {
-    constructor(@InjectStripe() private readonly stripe: Stripe) {}
+    constructor(@InjectStripe() private readonly stripe: Stripe) {
+    }
 
     public create(dto?: Stripe.CustomerCreateParams) {
         return this.stripe.customers.create(dto);
@@ -14,14 +15,18 @@ export class StripeCustomersService {
         return this.stripe.customers.update(id, dto);
     }
 
-    public retrieve<T extends (Stripe.Customer | Stripe.DeletedCustomer)>(
+    public retrieve<T extends Stripe.Response<(Stripe.Customer | Stripe.DeletedCustomer)>>(
         id: string,
         params?: Stripe.CustomerRetrieveParams
     ): Promise<T> {
         return this.stripe.customers.retrieve(id, params) as Promise<T>;
     }
 
-    public createSource<T extends Stripe.CustomerSource>(
+    public list(params?: Stripe.CustomerListParams) {
+        return this.stripe.customers.list(params);
+    }
+
+    public createSource<T extends Stripe.Response<Stripe.CustomerSource>>(
         id: string,
         source: string,
         params?: Omit<Stripe.CustomerSourceCreateParams, "source">
@@ -32,7 +37,7 @@ export class StripeCustomersService {
         }) as Promise<T>;
     }
 
-    public retrieveSource<T extends Stripe.CustomerSource>(
+    public retrieveSource<T extends Stripe.Response<Stripe.CustomerSource>>(
         customerId: string,
         sourceId: string,
         params?: Stripe.CustomerSourceRetrieveParams
@@ -47,13 +52,11 @@ export class StripeCustomersService {
         return this.stripe.customers.listSources(customerId, params) as Stripe.ApiListPromise<T>;
     }
 
-    public deleteSource<T extends
-        | Stripe.CustomerSource
+    public deleteSource<T extends Stripe.Response<Stripe.CustomerSource
         | Stripe.DeletedAlipayAccount
         | Stripe.DeletedBankAccount
         | Stripe.DeletedBitcoinReceiver
-        | Stripe.DeletedCard
-    >(
+        | Stripe.DeletedCard>>(
         customerId: string,
         sourceId: string,
         params?: Stripe.CustomerSourceDeleteParams
