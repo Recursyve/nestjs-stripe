@@ -1,6 +1,6 @@
-import {Injectable} from "@nestjs/common";
-import {Stripe} from "stripe";
-import {InjectStripe} from "../../../decorators/inject-stripe";
+import { Injectable } from "@nestjs/common";
+import { Stripe } from "stripe";
+import { InjectStripe } from "../../../decorators/inject-stripe";
 
 @Injectable()
 export class StripePricesService {
@@ -22,7 +22,7 @@ export class StripePricesService {
         return this.stripe.prices.retrieve(id, params) as Promise<T>;
     }
 
-    public list(params?: Stripe.PriceListParams) {
-        return this.stripe.prices.list(params);
+    public list<T extends Stripe.Price>(params?: Stripe.PriceListParams): Stripe.ApiListPromise<T> {
+        return this.stripe.prices.list(params) as Stripe.ApiListPromise<T>;
     }
 }
