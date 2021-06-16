@@ -1,6 +1,6 @@
-import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
-import {StripeConfigService} from "../modules/config/services/stripe-config.service";
-import {StripeWebHooksService} from "../modules/webhooks";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { StripeConfigService } from "../modules/config/services/stripe-config.service";
+import { StripeWebHooksService } from "../modules/webhooks";
 
 @Injectable()
 export class HooksGuard implements CanActivate {
@@ -12,7 +12,7 @@ export class HooksGuard implements CanActivate {
 
     public canActivate(context: ExecutionContext): boolean  {
         const request = context.switchToHttp().getRequest();
-        const endpointSecret = this.stripeConfigService.global?.webhookEndpointSecret;
+        const endpointSecret = this.stripeConfigService.global?.webhookSecret;
 
         if(!endpointSecret) {
             return false;
