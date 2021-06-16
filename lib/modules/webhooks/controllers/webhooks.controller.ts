@@ -1,12 +1,12 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from "@nestjs/common";
 import { PublicRoute } from "nestjs-jwt2";
-import { InvoiceHookHandlerService } from "../services/invoice-hook-handler.service";
+import { HookHandlerService } from "../services/hook-handler.service";
 import { Stripe } from "stripe";
 import { HooksGuard } from "../../../guards/hooks.guard";
 
 @Controller("webhooks")
 export class WebhooksController {
-    constructor(private service: InvoiceHookHandlerService) {
+    constructor(private service: HookHandlerService) {
     }
 
     @Post("invoice-success")
