@@ -3,9 +3,11 @@ import { PublicRoute } from "nestjs-jwt2";
 import { HookHandlerService } from "../services/hook-handler.service";
 import { Stripe } from "stripe";
 import { HooksGuard } from "../../../guards/hooks.guard";
+import {StripeEventPipe} from "../pipes/stripe-event.pipe";
 
 @Controller("webhooks")
 export class WebhooksController {
+
     constructor(private service: HookHandlerService) {
     }
 
@@ -13,15 +15,15 @@ export class WebhooksController {
     @PublicRoute()
     @UseGuards(HooksGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
-    public async onInvoicePaymentSuccess(@Body() event: Stripe.Event): Promise<void> {
-        return this.service.invoicePaymentSuccess(event);
+    public async onInvoicePaymentSuccess(@Body(new StripeEventPipe<Stripe.Invoice>()) invoice: Stripe.Invoice): Promise<void> {
+        return this.service.invoicePaymentSuccess(invoice);
     }
 
     @Post("invoice-failure")
     @PublicRoute()
     @UseGuards(HooksGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
-    public async onInvoicePaymentFailure(@Body() event: Stripe.Event): Promise<void> {
-        return this.service.invoicePaymentFailure(event);
+    public async onInvoicePaymentFailure(@Body(new StripeEventPipe<Stripe.Invoice>()) invoice: Stripe.Invoice): Promise<void> {
+        return this.service.invoicePaymentFailure(invoice);
     }
 }
