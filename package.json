@@ -25,6 +25,7 @@
         "lib": "lib"
     },
     "dependencies": {
+        "nestjs-jwt2": "^7.1.2",
         "stripe": "^8.137.0"
     },
     "peerDependencies": {

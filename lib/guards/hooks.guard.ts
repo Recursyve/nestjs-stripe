@@ -1,5 +1,4 @@
 import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
-import {Observable} from "rxjs";
 import {StripeConfigService} from "../modules/config/services/stripe-config.service";
 import {StripeWebHooksService} from "../modules/webhooks";
 
