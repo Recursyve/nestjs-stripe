@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import {StripeWebhooksController} from "./controllers/webhooks.controller";
-import {StripeWebhooksService} from "./services/webhooks.service";
-import {StripeWebhookHandlerService} from "./services/hook-handler.service";
+import {StripeWebhooksController} from "./controllers/stripe-webhooks.controller";
+import {StripeWebhooksService} from "./services/stripe-webhooks.service";
+import {StripeWebhookHandlerService} from "./services/stripe-webhook-handler.service";
 
 
 @Module({

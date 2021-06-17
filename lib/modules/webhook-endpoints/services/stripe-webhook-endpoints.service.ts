@@ -3,7 +3,7 @@ import { Stripe } from "stripe";
 import { InjectStripe } from "../../../decorators/inject-stripe";
 
 @Injectable()
-export class StripeWebHookEndpointsService {
+export class StripeWebhookEndpointsService {
     constructor(@InjectStripe() private readonly stripe: Stripe) {
     }
 

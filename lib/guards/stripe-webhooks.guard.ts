@@ -3,7 +3,7 @@ import { StripeConfigService } from "../modules/config/services/stripe-config.se
 import { StripeWebhooksService } from "../modules/webhooks";
 
 @Injectable()
-export class HooksGuard implements CanActivate {
+export class StripeWebhooksGuard implements CanActivate {
     constructor(
         private readonly stripeConfigService: StripeConfigService,
         private readonly stripeWebhooksService: StripeWebhooksService

@@ -1,3 +1,3 @@
-export * from "./webhooks.module";
-export * from "./services/webhooks.service";
-export * from "./services/hook-handler.service";
+export * from "./stripe-webhooks.module";
+export * from "./services/stripe-webhooks.service";
+export * from "./services/stripe-webhook-handler.service";
