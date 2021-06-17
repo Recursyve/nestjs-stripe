@@ -1,7 +1,8 @@
-import { DynamicModule, Global, Module } from "@nestjs/common";
+import {DynamicModule, Global, Module, Type} from "@nestjs/common";
 import { Stripe } from "stripe";
 import { GLOBAL_CONFIG, STRIPE_CLIENT } from "../constants";
 import { StripeConfigModel } from "./config";
+import { StripeWebhookHandlerService } from "./webhooks";
 
 export interface StripeOptions {
     config?: Partial<StripeConfigModel>;
@@ -34,6 +35,19 @@ export class StripeModule {
                 }
             ],
             exports: [GLOBAL_CONFIG, STRIPE_CLIENT]
+        };
+    }
+
+    public static forFeature(service: Type<StripeWebhookHandlerService>): DynamicModule {
+        return {
+            module: StripeModule,
+            providers: [
+                {
+                    provide: StripeWebhookHandlerService,
+                    useClass: service
+                }
+            ],
+            exports: [service]
         };
     }
 }
