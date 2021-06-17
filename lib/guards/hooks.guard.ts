@@ -1,12 +1,12 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { StripeConfigService } from "../modules/config/services/stripe-config.service";
-import { StripeWebHooksService } from "../modules/webhooks";
+import { StripeWebhooksService } from "../modules/webhooks";
 
 @Injectable()
 export class HooksGuard implements CanActivate {
     constructor(
         private readonly stripeConfigService: StripeConfigService,
-        private readonly stripeWebHooksService: StripeWebHooksService
+        private readonly stripeWebhooksService: StripeWebhooksService
     ) {
     }
 
@@ -14,13 +14,13 @@ export class HooksGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const endpointSecret = this.stripeConfigService.global?.webhookSecret;
 
-        if(!endpointSecret) {
+        if (!endpointSecret) {
             return false;
         }
 
         const signature = request.headers["stripe-signature"];
         try {
-            return !!this.stripeWebHooksService.constructEvent(request.body, signature, endpointSecret);
+            return !!this.stripeWebhooksService.constructEvent(request.body, signature, endpointSecret);
         } catch (error) {
             return false;
         }

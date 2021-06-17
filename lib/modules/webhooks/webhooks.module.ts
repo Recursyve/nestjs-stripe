@@ -1,11 +1,12 @@
 import { Module } from "@nestjs/common";
-import { StripeWebHooksService } from "./services/webhooks.service";
-import { WebhooksController } from "./controllers/webhooks.controller";
-import { HookHandlerService } from "./services/hook-handler.service";
+import {StripeWebhooksController} from "./controllers/webhooks.controller";
+import {StripeWebhooksService} from "./services/webhooks.service";
+import {StripeWebhookHandlerService} from "./services/hook-handler.service";
+
 
 @Module({
-    controllers: [WebhooksController],
-    providers: [StripeWebHooksService],
-    exports: [StripeWebHooksService, HookHandlerService]
+    controllers: [StripeWebhooksController],
+    providers: [StripeWebhooksService],
+    exports: [StripeWebhooksService, StripeWebhookHandlerService]
 })
 export class StripeWebHooksModule {}
