@@ -9,6 +9,13 @@ export class StripeWebhooksController {
     constructor(@Optional() private service: StripeWebhookHandlerService) {
     }
 
+    @Post("invoice/creation")
+    @ValidateStripeEvent()
+    @HttpCode(HttpStatus.NO_CONTENT)
+    public async onInvoiceCreation(@Body(new StripeEventPipe<Stripe.Invoice>()) invoice: Stripe.Invoice): Promise<void> {
+        return this.service?.invoiceCreation(invoice);
+    }
+
     @Post("invoice/success")
     @ValidateStripeEvent()
     @HttpCode(HttpStatus.NO_CONTENT)
