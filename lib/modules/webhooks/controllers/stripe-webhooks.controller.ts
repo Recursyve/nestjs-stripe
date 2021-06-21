@@ -26,14 +26,18 @@ export class StripeWebhooksController {
     @Post("payment-intent/success")
     @ValidateStripeEvent()
     @HttpCode(HttpStatus.NO_CONTENT)
-    public async onPaymentIntentSuccess(@Body(new StripeEventPipe<Stripe.PaymentIntent>()) intent: Stripe.PaymentIntent): Promise<void> {
+    public async onPaymentIntentSuccess(
+        @Body(new StripeEventPipe<Stripe.PaymentIntent>()) intent: Stripe.PaymentIntent
+    ): Promise<void> {
         return this.service?.paymentIntentSuccess(intent);
     }
 
     @Post("payment-intent/failure")
     @ValidateStripeEvent()
     @HttpCode(HttpStatus.NO_CONTENT)
-    public async onPaymentIntentFailure(@Body(new StripeEventPipe<Stripe.PaymentIntent>()) intent: Stripe.PaymentIntent): Promise<void> {
+    public async onPaymentIntentFailure(
+        @Body(new StripeEventPipe<Stripe.PaymentIntent>()) intent: Stripe.PaymentIntent
+    ): Promise<void> {
         return this.service?.paymentIntentFailure(intent);
     }
 }
