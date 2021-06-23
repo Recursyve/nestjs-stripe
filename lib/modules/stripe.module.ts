@@ -1,11 +1,17 @@
-import {DynamicModule, Global, Module, Type} from "@nestjs/common";
+import {DynamicModule, ForwardReference, Global, Module, Type} from "@nestjs/common";
 import { Stripe } from "stripe";
 import { GLOBAL_CONFIG, STRIPE_CLIENT } from "../constants";
 import { StripeConfigModel } from "./config";
-import { StripeWebhookHandlerService } from "./webhooks";
+import {StripeWebhookHandlerService, StripeWebHooksModule, StripeWebhooksService} from "./webhooks";
+import {StripeWebhooksController} from "./webhooks/controllers/stripe-webhooks.controller";
 
 export interface StripeOptions {
     config?: Partial<StripeConfigModel>;
+}
+
+export interface StripeFeatureConfig {
+    imports?: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference>;
+    provide?: Type<StripeWebhookHandlerService>;
 }
 
 @Global()
@@ -38,16 +44,15 @@ export class StripeModule {
         };
     }
 
-    public static forFeature(service: Type<StripeWebhookHandlerService>): DynamicModule {
+    public static forFeature(options?: StripeFeatureConfig): DynamicModule {
         return {
             module: StripeModule,
-            providers: [
-                {
-                    provide: StripeWebhookHandlerService,
-                    useClass: service
-                }
-            ],
-            exports: [service]
+            imports: [...options.imports, StripeWebHooksModule],
+            providers: options?.provide? [{
+                provide: StripeWebhookHandlerService,
+                useClass: options.provide
+            }] : null,
+            controllers: [StripeWebhooksController]
         };
     }
 }
