@@ -4,6 +4,8 @@ import { GLOBAL_CONFIG, STRIPE_CLIENT } from "../constants";
 import { StripeConfigModel } from "./config";
 import {StripeWebhookHandlerService, StripeWebHooksModule, StripeWebhooksService} from "./webhooks";
 import {StripeWebhooksController} from "./webhooks/controllers/stripe-webhooks.controller";
+import {APP_GUARD} from "@nestjs/core";
+import {StripeWebhooksGuard} from "../guards/stripe-webhooks.guard";
 
 export interface StripeOptions {
     config?: Partial<StripeConfigModel>;
@@ -48,11 +50,12 @@ export class StripeModule {
         return {
             module: StripeModule,
             imports: [...options.imports, StripeWebHooksModule],
-            providers: options?.provide? [{
-                provide: StripeWebhookHandlerService,
-                useClass: options.provide
-            }] : null,
-            controllers: [StripeWebhooksController]
+            providers: [
+                {
+                    provide: StripeWebhookHandlerService,
+                    useClass: options?.provide
+                }
+            ]
         };
     }
 }
