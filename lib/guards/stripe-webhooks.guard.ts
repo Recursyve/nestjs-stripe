@@ -13,19 +13,18 @@ export class StripeWebhooksGuard implements CanActivate {
     ) {
     }
 
-    public canActivate(context: ExecutionContext): boolean  {
+    public async canActivate(context: ExecutionContext): Promise<boolean>  {
         const path = this.reflector.get<string>(PATH_METADATA, context.getHandler());
         const request = context.switchToHttp().getRequest();
-
         const endpointSecret = this.stripeConfigService.global?.webhookSecrets[path];
 
         if (!endpointSecret) {
             return false;
         }
 
-        const signature = request.headers["stripe-signature"];
         try {
-            return !!this.stripeWebhooksService.constructEvent(request.body, signature, endpointSecret);
+            const signature = request.headers["stripe-signature"];
+            return !!this.stripeWebhooksService.constructEvent(request.rawBody, signature, endpointSecret);
         } catch (error) {
             return false;
         }
