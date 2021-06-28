@@ -1,6 +1,6 @@
 export interface StripeConfigModel {
     clientSecret: string;
-    webhookSecrets?: StripeWebhooksSecretsConfigModel[];
+    webhookSecrets?: StripeWebhooksSecretsConfigModel;
 }
 
 export interface StripeWebhooksSecretsConfigModel {
@@ -9,7 +9,7 @@ export interface StripeWebhooksSecretsConfigModel {
 
 export class StripeConfigModel {
     public clientSecret: string;
-    public webhookSecrets?: StripeWebhooksSecretsConfigModel[];
+    public webhookSecrets?: StripeWebhooksSecretsConfigModel;
 
     constructor(config: Partial<StripeConfigModel>) {
         this.clientSecret = config.clientSecret ?? process.env.STRIPE_CLIENT_SECRET;

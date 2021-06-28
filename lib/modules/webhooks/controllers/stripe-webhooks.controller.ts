@@ -1,4 +1,4 @@
-import {Body, Controller, HttpCode, HttpStatus, Optional, Post} from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpStatus, Optional, Post } from "@nestjs/common";
 import { StripeWebhookHandlerService } from "../services/stripe-webhook-handler.service";
 import { Stripe } from "stripe";
 import { StripeEventPipe } from "../pipes/stripe-event.pipe";

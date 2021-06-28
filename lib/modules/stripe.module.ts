@@ -1,8 +1,8 @@
-import {DynamicModule, ForwardReference, Global, Module, Type} from "@nestjs/common";
-import {Stripe} from "stripe";
-import {GLOBAL_CONFIG, STRIPE_CLIENT} from "../constants";
-import {StripeConfigModel} from "./config";
-import {StripeWebhookHandlerService, StripeWebHooksModule} from "./webhooks";
+import { DynamicModule, ForwardReference, Global, Module, Type } from "@nestjs/common";
+import { Stripe } from "stripe";
+import { GLOBAL_CONFIG, STRIPE_CLIENT } from "../constants";
+import { StripeConfigModel } from "./config";
+import { StripeWebhookHandlerService, StripeWebHooksModule } from "./webhooks";
 
 export interface StripeOptions {
     config?: Partial<StripeConfigModel>;
