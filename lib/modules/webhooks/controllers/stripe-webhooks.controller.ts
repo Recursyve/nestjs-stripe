@@ -4,47 +4,52 @@ import { Stripe } from "stripe";
 import { StripeEventPipe } from "../pipes/stripe-event.pipe";
 import { ValidateStripeEvent } from "../../../decorators/validate-stripe-event";
 
+export enum StripeWebhookRoutePaths {
+    PaymentIntentFailure = "payment-intent/failure",
+    PaymentIntentSuccess = "payment-intent/success",
+    InvoiceCreation = "invoice/creation",
+    InvoiceSuccess = "invoice/success",
+    InvoiceFailure = "invoice/failure"
+}
+
 @Controller("stripe/webhooks")
 export class StripeWebhooksController {
     constructor(@Optional() private service: StripeWebhookHandlerService) {
     }
 
-    @Post("invoice/creation")
+    @Post(StripeWebhookRoutePaths.InvoiceCreation)
     @ValidateStripeEvent()
     @HttpCode(HttpStatus.NO_CONTENT)
     public async onInvoiceCreation(@Body(new StripeEventPipe<Stripe.Invoice>()) invoice: Stripe.Invoice): Promise<void> {
         return this.service?.invoiceCreation(invoice);
     }
 
-    @Post("invoice/success")
+    @Post(StripeWebhookRoutePaths.InvoiceSuccess)
     @ValidateStripeEvent()
     @HttpCode(HttpStatus.NO_CONTENT)
     public async onInvoicePaymentSuccess(@Body(new StripeEventPipe<Stripe.Invoice>()) invoice: Stripe.Invoice): Promise<void> {
         return this.service?.invoicePaymentSuccess(invoice);
     }
 
-    @Post("invoice/failure")
+    @Post(StripeWebhookRoutePaths.InvoiceFailure)
     @ValidateStripeEvent()
     @HttpCode(HttpStatus.NO_CONTENT)
     public async onInvoicePaymentFailure(@Body(new StripeEventPipe<Stripe.Invoice>()) invoice: Stripe.Invoice): Promise<void> {
         return this.service?.invoicePaymentFailure(invoice);
     }
 
-    @Post("payment-intent/success")
+    @Post(StripeWebhookRoutePaths.PaymentIntentSuccess)
     @ValidateStripeEvent()
     @HttpCode(HttpStatus.NO_CONTENT)
-    public async onPaymentIntentSuccess(
-        @Body(new StripeEventPipe<Stripe.PaymentIntent>()) intent: Stripe.PaymentIntent
-    ): Promise<void> {
+    public async onPaymentIntentSuccess(@Body(new StripeEventPipe<Stripe.PaymentIntent>()) intent: Stripe.PaymentIntent): Promise<void> {
         return this.service?.paymentIntentSuccess(intent);
     }
 
-    @Post("payment-intent/failure")
+    @Post(StripeWebhookRoutePaths.PaymentIntentFailure)
     @ValidateStripeEvent()
     @HttpCode(HttpStatus.NO_CONTENT)
-    public async onPaymentIntentFailure(
-        @Body(new StripeEventPipe<Stripe.PaymentIntent>()) intent: Stripe.PaymentIntent
-    ): Promise<void> {
+    public async onPaymentIntentFailure(@Body(new StripeEventPipe<Stripe.PaymentIntent>()) intent: Stripe.PaymentIntent): Promise<void> {
         return this.service?.paymentIntentFailure(intent);
     }
 }
+

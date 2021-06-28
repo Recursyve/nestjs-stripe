@@ -4,8 +4,7 @@ export interface StripeConfigModel {
 }
 
 export interface StripeWebhooksSecretsConfigModel {
-    route: string;
-    webhookSecret: string
+    [route: string]: string;
 }
 
 export class StripeConfigModel {

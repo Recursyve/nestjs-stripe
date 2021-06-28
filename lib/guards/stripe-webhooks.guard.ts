@@ -14,11 +14,11 @@ export class StripeWebhooksGuard implements CanActivate {
     }
 
     public canActivate(context: ExecutionContext): boolean  {
-        const path = this.reflector.get<string[]>(PATH_METADATA, context.getHandler());
+        const path = this.reflector.get<string>(PATH_METADATA, context.getHandler());
         console.log(path)
         const request = context.switchToHttp().getRequest();
 
-        const endpointSecret = this.stripeConfigService.global?.webhookSecrets[path[0]];
+        const endpointSecret = this.stripeConfigService.global?.webhookSecrets[path];
 
         if (!endpointSecret) {
             return false;
