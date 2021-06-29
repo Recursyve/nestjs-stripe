@@ -6,11 +6,8 @@ import { StripeWebhookHandlerService, StripeWebHooksModule } from "./webhooks";
 
 export interface StripeOptions {
     config?: Partial<StripeConfigModel>;
-}
-
-export interface StripeFeatureConfig {
+    webhookHandler?: Type<StripeWebhookHandlerService>;
     imports?: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference>;
-    provide?: Type<StripeWebhookHandlerService>;
 }
 
 @Global()
@@ -24,6 +21,7 @@ export class StripeModule {
         }
         return {
             module: StripeModule,
+            imports: [...options.imports, StripeWebHooksModule],
             providers: [
                 {
                     provide: GLOBAL_CONFIG,
@@ -37,22 +35,14 @@ export class StripeModule {
                         });
                     },
                     inject: [GLOBAL_CONFIG]
+                },
+                {
+                    provide: StripeWebhookHandlerService,
+                    useClass: options?.webhookHandler
                 }
             ],
-            exports: [GLOBAL_CONFIG, STRIPE_CLIENT]
+            exports: [GLOBAL_CONFIG, STRIPE_CLIENT, StripeWebhookHandlerService]
         };
     }
 
-    public static forFeature(options?: StripeFeatureConfig): DynamicModule {
-        return {
-            module: StripeModule,
-            imports: [...options.imports, StripeWebHooksModule],
-            providers: [
-                {
-                    provide: StripeWebhookHandlerService,
-                    useClass: options?.provide
-                }
-            ]
-        };
-    }
 }
