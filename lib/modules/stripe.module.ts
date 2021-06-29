@@ -6,8 +6,8 @@ import { StripeWebhookHandlerService, StripeWebHooksModule } from "./webhooks";
 
 export interface StripeOptions {
     config?: Partial<StripeConfigModel>;
-    webhookHandler?: Type<StripeWebhookHandlerService>;
     imports?: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference>;
+    webhookHandler?: Type<StripeWebhookHandlerService>;
 }
 
 @Global()
@@ -44,5 +44,4 @@ export class StripeModule {
             exports: [GLOBAL_CONFIG, STRIPE_CLIENT, StripeWebhookHandlerService]
         };
     }
-
 }
