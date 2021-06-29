@@ -24,7 +24,7 @@ export class StripeWebhooksGuard implements CanActivate {
 
         try {
             const signature = request.headers["stripe-signature"];
-            return !!this.stripeWebhooksService.constructEvent(request.rawBody, signature, endpointSecret);
+            return !!this.stripeWebhooksService.constructEvent(request.body, signature, endpointSecret);
         } catch (error) {
             return false;
         }

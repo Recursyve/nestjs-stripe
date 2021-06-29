@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { Stripe } from "stripe";
+import {Injectable, Scope} from "@nestjs/common";
+import {Stripe} from "stripe";
 
 @Injectable()
 export abstract class StripeWebhookHandlerService {

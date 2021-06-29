@@ -1,9 +1,9 @@
-import { Module } from "@nestjs/common";
+import {Global, Module} from "@nestjs/common";
 import { StripeWebhooksController } from "./controllers/stripe-webhooks.controller";
 import { StripeWebhooksService } from "./services/stripe-webhooks.service";
 import { StripeConfigService } from "../config/services/stripe-config.service";
 
-
+@Global()
 @Module({
     controllers: [StripeWebhooksController],
     providers: [
