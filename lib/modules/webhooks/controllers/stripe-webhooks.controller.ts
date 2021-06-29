@@ -48,4 +48,3 @@ export class StripeWebhooksController {
         return this.service?.paymentIntentFailure(intent);
     }
 }
-
