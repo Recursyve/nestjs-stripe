@@ -3,7 +3,8 @@ import { Stripe } from "stripe";
 
 @Injectable()
 export class StripeEventPipe<T> implements PipeTransform {
-    public transform(value: Stripe.Event, metadata: ArgumentMetadata): T {
-        return value.data.object as T;
+    public transform(rawRequestBody: Buffer, metadata: ArgumentMetadata): T {
+        const stripeEvent = JSON.parse(rawRequestBody.toString()) as Stripe.Event;
+        return stripeEvent.data.object as T;
     }
 }
