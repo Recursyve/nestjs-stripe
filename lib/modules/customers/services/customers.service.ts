@@ -26,6 +26,13 @@ export class StripeCustomersService {
         return this.stripe.customers.list(params);
     }
 
+    public del<T extends Stripe.Response<Stripe.DeletedCustomer>>(
+        customerId: string,
+        params?: Stripe.CustomerDeleteParams
+    ): Promise<T> {
+        return this.stripe.customers.del(customerId, params) as Promise<T>;
+    }
+
     public createSource<T extends Stripe.Response<Stripe.CustomerSource>>(
         id: string,
         source: string,

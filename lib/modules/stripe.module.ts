@@ -21,7 +21,7 @@ export class StripeModule {
         }
         return {
             module: StripeModule,
-            imports: [...options.imports, StripeWebHooksModule],
+            imports: options?.imports ? [...options.imports, StripeWebHooksModule] : [],
             providers: [
                 {
                     provide: GLOBAL_CONFIG,
