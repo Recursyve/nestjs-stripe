@@ -2,11 +2,12 @@ import { DynamicModule, ForwardReference, Global, Module, Type } from "@nestjs/c
 import { Stripe } from "stripe";
 import { GLOBAL_CONFIG, STRIPE_CLIENT } from "../constants";
 import { StripeConfigModel } from "./config";
-import { StripeWebhookHandlerService, StripeWebHooksModule } from "./webhooks";
+import { StripeWebhookHandlerService } from "./webhooks";
+import { StripeWebhooksController } from "./webhooks/controllers/stripe-webhooks.controller";
 
 export interface StripeOptions {
     config?: Partial<StripeConfigModel>;
-    imports?: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference>;
+    imports?: (Type | DynamicModule | Promise<DynamicModule> | ForwardReference)[];
     webhookHandler?: Type<StripeWebhookHandlerService>;
 }
 
@@ -21,7 +22,8 @@ export class StripeModule {
         }
         return {
             module: StripeModule,
-            imports: options?.imports ? [...options.imports, StripeWebHooksModule] : [],
+            imports: options?.imports ? [...options.imports] : [],
+            controllers: [StripeWebhooksController],
             providers: [
                 {
                     provide: GLOBAL_CONFIG,
@@ -36,12 +38,12 @@ export class StripeModule {
                     },
                     inject: [GLOBAL_CONFIG]
                 },
-                {
+                options?.webhookHandler ? {
                     provide: StripeWebhookHandlerService,
                     useClass: options?.webhookHandler
-                }
-            ],
-            exports: [GLOBAL_CONFIG, STRIPE_CLIENT, StripeWebhookHandlerService]
+                } : undefined,
+            ].filter((x) => !!x),
+            exports: [GLOBAL_CONFIG, STRIPE_CLIENT]
         };
     }
 }

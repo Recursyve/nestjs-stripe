@@ -56,7 +56,7 @@ export class StripeInvoicesService {
 
     public retrieve<T extends Stripe.Response<Stripe.Invoice>>(
         id: string,
-        params?: Stripe.InvoicePayParams
+        params?: Stripe.InvoiceRetrieveParams
     ): Promise<T> {
         return this.stripe.invoices.retrieve(id, params) as Promise<T>;
     }
