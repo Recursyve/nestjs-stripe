@@ -2,7 +2,7 @@ import { DynamicModule, ForwardReference, Global, Module, Type } from "@nestjs/c
 import { Stripe } from "stripe";
 import { GLOBAL_CONFIG, STRIPE_CLIENT } from "../constants";
 import { StripeConfigModel } from "./config";
-import { StripeWebhookHandlerService } from "./webhooks";
+import { StripeWebhookHandlerService, StripeWebhooksService } from "./webhooks";
 import { StripeWebhooksController } from "./webhooks/controllers/stripe-webhooks.controller";
 
 export interface StripeOptions {
@@ -42,6 +42,7 @@ export class StripeModule {
                     provide: StripeWebhookHandlerService,
                     useClass: options?.webhookHandler
                 } : undefined,
+                StripeWebhooksService
             ].filter((x) => !!x),
             exports: [GLOBAL_CONFIG, STRIPE_CLIENT]
         };
