@@ -1,18 +1,9 @@
-export interface StripeConfigModel {
-    clientSecret: string;
-    webhookSecrets?: StripeWebhooksSecretsConfigModel;
-}
-
-export interface StripeWebhooksSecretsConfigModel {
-    [route: string]: string;
-}
-
 export class StripeConfigModel {
     public clientSecret: string;
-    public webhookSecrets?: StripeWebhooksSecretsConfigModel;
+    public webhookSecret?: string;
 
     constructor(config: Partial<StripeConfigModel>) {
-        this.clientSecret = config.clientSecret ?? process.env.STRIPE_CLIENT_SECRET;
-        this.webhookSecrets = config.webhookSecrets
+        this.clientSecret = config.clientSecret ?? process.env.STRIPE_CLIENT_SECRET ?? "";
+        this.webhookSecret = config.webhookSecret ?? process.env.STRIPE_WEBHOOK_SECRET ?? "";
     }
 }

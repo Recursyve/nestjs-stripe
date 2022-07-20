@@ -7,7 +7,7 @@ export class StripeSubscriptionsService {
     constructor(@InjectStripe() private readonly stripe: Stripe) {
     }
 
-    public create(dto?: Stripe.SubscriptionCreateParams) {
+    public create(dto: Stripe.SubscriptionCreateParams) {
         return this.stripe.subscriptions.create(dto);
     }
 

@@ -7,7 +7,7 @@ export class StripePaymentIntentsService {
     constructor(@InjectStripe() private readonly stripe: Stripe) {
     }
 
-    public create(dto?: Stripe.PaymentIntentCreateParams) {
+    public create(dto: Stripe.PaymentIntentCreateParams) {
         return this.stripe.paymentIntents.create(dto);
     }
 

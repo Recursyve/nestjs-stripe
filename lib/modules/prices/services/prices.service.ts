@@ -7,7 +7,7 @@ export class StripePricesService {
     constructor(@InjectStripe() private readonly stripe: Stripe) {
     }
 
-    public create(dto?: Stripe.PriceCreateParams) {
+    public create(dto: Stripe.PriceCreateParams) {
         return this.stripe.prices.create(dto);
     }
 

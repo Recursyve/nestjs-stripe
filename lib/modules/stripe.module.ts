@@ -1,14 +1,12 @@
-import { DynamicModule, ForwardReference, Global, Module, Type } from "@nestjs/common";
+import { DynamicModule, Global, Module } from "@nestjs/common";
 import { Stripe } from "stripe";
 import { GLOBAL_CONFIG, STRIPE_CLIENT } from "../constants";
 import { StripeConfigModel } from "./config";
-import { StripeWebhookHandlerService, StripeWebhooksService } from "./webhooks";
-import { StripeWebhooksController } from "./webhooks/controllers/stripe-webhooks.controller";
+import { StripeWebhooksModule, StripeWebhooksOptions } from "./webhooks/webhooks.module";
 
 export interface StripeOptions {
     config?: Partial<StripeConfigModel>;
-    imports?: (Type | DynamicModule | Promise<DynamicModule> | ForwardReference)[];
-    webhookHandler?: Type<StripeWebhookHandlerService>;
+    webhooks?: StripeWebhooksOptions;
 }
 
 @Global()
@@ -20,14 +18,19 @@ export class StripeModule {
                 config: {}
             };
         }
+
+        const imports = [];
+        if (options.webhooks) {
+            imports.push(StripeWebhooksModule.forRoot(options.webhooks));
+        }
+
         return {
             module: StripeModule,
-            imports: options?.imports ? [...options.imports] : [],
-            controllers: [StripeWebhooksController],
+            imports,
             providers: [
                 {
                     provide: GLOBAL_CONFIG,
-                    useValue: new StripeConfigModel(options.config)
+                    useValue: new StripeConfigModel(options.config ?? {})
                 },
                 {
                     provide: STRIPE_CLIENT,
@@ -37,13 +40,8 @@ export class StripeModule {
                         });
                     },
                     inject: [GLOBAL_CONFIG]
-                },
-                options?.webhookHandler ? {
-                    provide: StripeWebhookHandlerService,
-                    useClass: options?.webhookHandler
-                } : undefined,
-                StripeWebhooksService
-            ].filter((x) => !!x),
+                }
+            ],
             exports: [GLOBAL_CONFIG, STRIPE_CLIENT]
         };
     }

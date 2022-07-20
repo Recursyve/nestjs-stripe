@@ -7,7 +7,7 @@ export class StripeInvoiceItemsService {
     constructor(@InjectStripe() private readonly stripe: Stripe) {
     }
 
-    public create(dto?: Stripe.InvoiceItemCreateParams) {
+    public create(dto: Stripe.InvoiceItemCreateParams) {
         return this.stripe.invoiceItems.create(dto);
     }
 
