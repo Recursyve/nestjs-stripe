@@ -17,9 +17,9 @@ export class StripeSubscriptionsService {
 
     public delete<T extends Stripe.Response<Stripe.Subscription>>(
         id: string,
-        params?: Stripe.SubscriptionDeleteParams
+        params?: Stripe.SubscriptionCancelParams
     ):Promise<T> {
-        return this.stripe.subscriptions.del(id, params) as Promise<T>;
+        return this.stripe.subscriptions.cancel(id, params) as Promise<T>;
     }
 
     public deleteDiscount<T extends Stripe.Response<Stripe.DeletedDiscount>>(

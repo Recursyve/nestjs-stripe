@@ -10,6 +10,7 @@ import { StripeBillingPortalConfigurationsWebhookEvent, StripeBillingPortalSessi
 import { StripeCapabilitiesWebhookEvent } from "../events/capabilities.webhook.event";
 import { StripeChargeDisputesWebhookEvent, StripeChargeRefundsWebhookEvent, StripeChargesWebhookEvent } from "../events/charges.webhook.event";
 import { StripeCheckoutSessionsWebhookEvent } from "../events/checkout.webhook.event";
+import { StripeClimateOrdersWebhookEvent, StripeClimateProductsWebhookEvent } from "../events/climates.webhook.event";
 import { StripeCouponsWebhookEvent } from "../events/coupons.webhook.event";
 import { StripeCreditNotesWebhookEvent } from "../events/credit-notes.webhook.event";
 import {
@@ -30,8 +31,6 @@ import { StripeIssuingCardsWebhookEvent } from "../events/issuing-cards.webhook.
 import { StripeIssuingDisputesWebhookEvent } from "../events/issuing-disputes.webhook.event";
 import { StripeIssuingTransactionsWebhookEvent } from "../events/issuing-transactions.webhook.event";
 import { StripeMandatesWebhookEvent } from "../events/mandates.webhook.event";
-import { StripeOrderReturnsWebhookEvent } from "../events/order-returns.webhook.event";
-import { StripeOrdersWebhookEvent } from "../events/orders.webhook.event";
 import { StripePaymentIntentsWebhookEvent } from "../events/payment-intents.webhook.event";
 import { StripePaymentLinksWebhookEvent } from "../events/payment-links.webhook.event";
 import { StripePaymentMethodsWebhookEvent } from "../events/payment-methods.webhook.event";
@@ -43,12 +42,11 @@ import { StripeProductsWebhookEvent } from "../events/products.webhook.event";
 import { StripePromotionCodesWebhookEvent } from "../events/promotion-codes.webhook.event";
 import { StripeQuotesWebhookEvent } from "../events/quotes.webhook.event";
 import { StripeRadarEarlyFraudWarningWebhookEvent } from "../events/radar.webhook.event";
-import { StripeRecipientsWebhookEvent } from "../events/recipients.webhook.event";
+import { StripeRefundWebhookEvent } from "../events/refund.webhook.event";
 import { StripeReportingReportRunWebhookEvent, StripeReportingReportTypeWebhookEvent } from "../events/reporting.webhook.event";
 import { StripeReviewsWebhookEvent } from "../events/reviews.webhook.event";
 import { StripeSetupIntentsWebhookEvent } from "../events/setup-intents.webhook.event";
 import { StripeSigmaScheduledQueryRunWebhookEvent } from "../events/sigma.webhook.event";
-import { StripeSkuWebhookEvent } from "../events/sku.webhook.event";
 import {
     StripeSourceMandateNotificationsWebhookEvent,
     StripeSourcesWebhookEvent,
@@ -92,6 +90,8 @@ export class StripeWebhookCqrsHandlerService extends StripeWebhookHandlerService
                 return this.handleCharge(actions, event.data.object);
             case "checkout":
                 return this.handleCheckout(actions, event.data.object as Stripe.Checkout.Session);
+            case "climate":
+                return this.handleClimate(actions, event.data.object as Stripe.Climate.Order);
             case "coupon":
                 return this.handleCoupon(actions, event.data.object as Stripe.Coupon);
             case "credit_note":
@@ -120,10 +120,6 @@ export class StripeWebhookCqrsHandlerService extends StripeWebhookHandlerService
                 return this.handleIssuingTransaction(actions, event.data.object as Stripe.Issuing.Transaction);
             case "mandate":
                 return this.handleMandate(actions, event.data.object as Stripe.Mandate);
-            case "order":
-                return this.handleOrder(actions, event.data.object as Stripe.Order);
-            case "order_return":
-                return this.handleOrderReturn(actions, event.data.object as Stripe.Order);
             case "payment_intent":
                 return this.handlePaymentIntent(actions, event.data.object as Stripe.PaymentIntent);
             case "payment_link":
@@ -147,7 +143,7 @@ export class StripeWebhookCqrsHandlerService extends StripeWebhookHandlerService
             case "radar":
                 return this.handleRadar(actions, event.data.object as Stripe.Radar.EarlyFraudWarning);
             case "recipient":
-                return this.handleRecipient(actions, event.data.object as Stripe.Recipient);
+                return this.handleRefund(actions, event.data.object as Stripe.Refund);
             case "reporting":
                 return this.handleReporting(actions, event.data.object);
             case "review":
@@ -156,8 +152,6 @@ export class StripeWebhookCqrsHandlerService extends StripeWebhookHandlerService
                 return this.handleSetupIntent(actions, event.data.object as Stripe.SetupIntent);
             case "sigma":
                 return this.handleSigma(actions, event.data.object as Stripe.Sigma.ScheduledQueryRun);
-            case "sku":
-                return this.handleSku(actions, event.data.object as Stripe.Sku);
             case "source":
                 return this.handleSource(actions, event.data.object);
             case "subscription_schedule":
@@ -213,6 +207,17 @@ export class StripeWebhookCqrsHandlerService extends StripeWebhookHandlerService
 
     private handleCheckout(actions: string[], data: Stripe.Checkout.Session): void {
         this.eventBus.publish(new StripeCheckoutSessionsWebhookEvent(actions.join("."), data));
+    }
+
+    private handleClimate(actions: string[], data: Stripe.Climate.Order | Stripe.Climate.Product): void {
+        const [type, action] = actions;
+        if (type === "order") {
+            this.eventBus.publish(new StripeClimateOrdersWebhookEvent(action, data as Stripe.Climate.Order));
+        }
+
+        if (type === "product") {
+            this.eventBus.publish(new StripeClimateProductsWebhookEvent(action, data as Stripe.Climate.Product));
+        }
     }
 
     private handleCoupon(actions: string[], data: Stripe.Coupon): void {
@@ -282,14 +287,6 @@ export class StripeWebhookCqrsHandlerService extends StripeWebhookHandlerService
         this.eventBus.publish(new StripeMandatesWebhookEvent(actions[0], data));
     }
 
-    private handleOrder(actions: string[], data: Stripe.Order): void {
-        this.eventBus.publish(new StripeOrdersWebhookEvent(actions[0], data));
-    }
-
-    private handleOrderReturn(actions: string[], data: Stripe.Order): void {
-        this.eventBus.publish(new StripeOrderReturnsWebhookEvent(actions[0], data));
-    }
-
     private handlePaymentIntent(actions: string[], data: Stripe.PaymentIntent): void {
         this.eventBus.publish(new StripePaymentIntentsWebhookEvent(actions[0], data));
     }
@@ -334,8 +331,8 @@ export class StripeWebhookCqrsHandlerService extends StripeWebhookHandlerService
         this.eventBus.publish(new StripeRadarEarlyFraudWarningWebhookEvent(actions[1], data));
     }
 
-    private handleRecipient(actions: string[], data: Stripe.Recipient): void {
-        this.eventBus.publish(new StripeRecipientsWebhookEvent(actions[0], data));
+    private handleRefund(actions: string[], data: Stripe.Refund): void {
+        this.eventBus.publish(new StripeRefundWebhookEvent(actions[0], data));
     }
 
     private handleReporting(actions: string[], data: Stripe.Event.Data.Object): void {
@@ -357,10 +354,6 @@ export class StripeWebhookCqrsHandlerService extends StripeWebhookHandlerService
 
     private handleSigma(actions: string[], data: Stripe.Sigma.ScheduledQueryRun): void {
         this.eventBus.publish(new StripeSigmaScheduledQueryRunWebhookEvent(actions[1], data as Stripe.Sigma.ScheduledQueryRun));
-    }
-
-    private handleSku(actions: string[], data: Stripe.Sku): void {
-        this.eventBus.publish(new StripeSkuWebhookEvent(actions[0], data as Stripe.Sku));
     }
 
     private handleSource(actions: string[], data: Stripe.Event.Data.Object): void {

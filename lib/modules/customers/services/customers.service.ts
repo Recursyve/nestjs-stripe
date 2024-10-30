@@ -36,7 +36,7 @@ export class StripeCustomersService {
     public createSource<T extends Stripe.Response<Stripe.CustomerSource>>(
         id: string,
         source: string,
-        params?: Omit<Stripe.CustomerSourceCreateParams, "source">
+        params?: Omit<Stripe.CustomerCreateSourceParams, "source">
     ): Promise<T> {
         return this.stripe.customers.createSource(id, {
             ...params ?? {},
@@ -47,26 +47,22 @@ export class StripeCustomersService {
     public retrieveSource<T extends Stripe.Response<Stripe.CustomerSource>>(
         customerId: string,
         sourceId: string,
-        params?: Stripe.CustomerSourceRetrieveParams
+        params?: Stripe.CustomerRetrieveSourceParams
     ): Promise<T> {
         return this.stripe.customers.retrieveSource(customerId, sourceId, params) as Promise<T>;
     }
 
     public listSource<T extends Stripe.CustomerSource>(
         customerId: string,
-        params?: Stripe.CustomerSourceListParams
+        params?: Stripe.CustomerListSourcesParams
     ): Stripe.ApiListPromise<T> {
         return this.stripe.customers.listSources(customerId, params) as Stripe.ApiListPromise<T>;
     }
 
-    public deleteSource<T extends Stripe.Response<Stripe.CustomerSource
-        | Stripe.DeletedAlipayAccount
-        | Stripe.DeletedBankAccount
-        | Stripe.DeletedBitcoinReceiver
-        | Stripe.DeletedCard>>(
+    public deleteSource<T extends Stripe.Response<Stripe.CustomerSource | Stripe.DeletedCustomerSource>>(
         customerId: string,
         sourceId: string,
-        params?: Stripe.CustomerSourceDeleteParams
+        params?: Stripe.CustomerDeleteSourceParams
     ): Promise<T> {
         return this.stripe.customers.deleteSource(customerId, sourceId, params) as Promise<T>;
     }

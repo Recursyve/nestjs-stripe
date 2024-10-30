@@ -67,15 +67,15 @@ export class StripeInvoicesService {
 
     public listLineItems<T extends Stripe.InvoiceLineItem>(
         id: string,
-        params?: Stripe.InvoiceLineItemListParams
+        params?: Stripe.InvoiceListLineItemsParams
     ): Stripe.ApiListPromise<T> {
         return this.stripe.invoices.listLineItems(id, params) as Stripe.ApiListPromise<T>;
     }
 
     public listUpcomingLineItems<T extends Stripe.InvoiceLineItem>(
-        params?: Stripe.InvoiceLineItemListUpcomingParams
+        params?: Stripe.InvoiceListUpcomingLinesParams
     ): Stripe.ApiListPromise<T> {
-        return this.stripe.invoices.listUpcomingLineItems(params) as Stripe.ApiListPromise<T>;
+        return this.stripe.invoices.listUpcomingLines(params) as Stripe.ApiListPromise<T>;
     }
 
     public markUncollectible<T extends Stripe.Response<Stripe.Invoice>>(

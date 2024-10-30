@@ -1,8 +1,8 @@
 import { Stripe } from "stripe";
 
-export class StripeOrdersWebhookEvent {
+export class StripeRefundWebhookEvent {
     constructor(
         public readonly event: string,
-        public readonly order: Stripe.Order
+        public readonly recipient: Stripe.Refund
     ) {}
 }
