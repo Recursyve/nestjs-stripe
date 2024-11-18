@@ -10,3 +10,4 @@ export * from "./modules/subscriptions";
 export * from "./modules/invoices";
 export * from "./modules/payment-intents";
 export * from "./modules/webhooks";
+export * from "./modules/setup-intents";

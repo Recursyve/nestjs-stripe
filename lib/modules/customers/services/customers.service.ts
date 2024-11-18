@@ -66,4 +66,19 @@ export class StripeCustomersService {
     ): Promise<T> {
         return this.stripe.customers.deleteSource(customerId, sourceId, params) as Promise<T>;
     }
+
+    public retrievePaymentMethod<T extends Stripe.Response<Stripe.PaymentMethod>>(
+        customerId: string,
+        paymentMethodId: string,
+        params?: Stripe.CustomerRetrievePaymentMethodParams
+    ): Promise<T> {
+        return this.stripe.customers.retrievePaymentMethod(customerId, paymentMethodId, params) as Promise<T>;
+    }
+
+    public listPaymentMethods<T extends Stripe.CustomerSource>(
+        customerId: string,
+        params?: Stripe.CustomerListPaymentMethodsParams
+    ): Stripe.ApiListPromise<T> {
+        return this.stripe.customers.listSources(customerId, params) as Stripe.ApiListPromise<T>;
+    }
 }
