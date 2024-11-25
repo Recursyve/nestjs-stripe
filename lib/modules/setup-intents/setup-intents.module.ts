@@ -3,6 +3,6 @@ import { StripeSetupIntentsService } from "./services/setup-intents.service";
 
 @Module({
     providers: [StripeSetupIntentsService],
-    exports: [StripeSetupIntentsService]
+    exports: [StripeSetupIntentsService],
 })
 export class StripeSetupIntentsModule {}
