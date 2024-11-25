@@ -21,7 +21,7 @@ export class StripePaymentMethodsService {
 
     public detach<T extends Stripe.Response<Stripe.PaymentMethod>>(id: string): Promise<T> {
         return this.stripe.paymentMethods.detach(id) as Promise<T>;
-    }    
+    }
 
     public update<T extends Stripe.Response<Stripe.PaymentMethod>>(id: string, dto?: Stripe.PaymentMethodUpdateParams): Promise<T> {
         return this.stripe.paymentMethods.update(id, dto) as Promise<T>;
