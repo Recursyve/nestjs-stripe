@@ -12,3 +12,4 @@ export * from "./modules/payment-intents";
 export * from "./modules/webhooks";
 export * from "./modules/setup-intents";
 export * from "./modules/subscription-items";
+export * from "./modules/tax-rates";
