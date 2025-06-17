@@ -61,9 +61,9 @@ export class StripeInvoicesService {
         return this.stripe.invoices.retrieve(id, params) as Promise<T>;
     }
 
-    public retrieveUpcoming<T extends Stripe.Response<Stripe.Invoice>>(params?: Stripe.InvoicePayParams): Promise<T> {
-        return this.stripe.invoices.retrieveUpcoming(params) as Promise<T>;
-    }
+	public async previewInvoice(params: Stripe.InvoiceCreatePreviewParams): Promise<Stripe.Response<Stripe.Invoice>> {
+		return this.stripe.invoices.createPreview(params);
+	}
 
     public listLineItems<T extends Stripe.InvoiceLineItem>(
         id: string,
@@ -72,11 +72,12 @@ export class StripeInvoicesService {
         return this.stripe.invoices.listLineItems(id, params) as Stripe.ApiListPromise<T>;
     }
 
-    public listUpcomingLineItems<T extends Stripe.InvoiceLineItem>(
-        params?: Stripe.InvoiceListUpcomingLinesParams
-    ): Stripe.ApiListPromise<T> {
-        return this.stripe.invoices.listUpcomingLines(params) as Stripe.ApiListPromise<T>;
-    }
+	public async previewInvoiceLineItems(
+		params: Stripe.InvoiceCreatePreviewParams
+	): Promise<Stripe.ApiList<Stripe.InvoiceLineItem>> {
+		const invoice = await this.stripe.invoices.createPreview(params);
+		return invoice.lines;
+	}
 
     public markUncollectible<T extends Stripe.Response<Stripe.Invoice>>(
         id: string,
