@@ -193,3 +193,6 @@ app/.env
 
 # IDEs and editors
 /.idea
+
+*.js
+*.d.ts

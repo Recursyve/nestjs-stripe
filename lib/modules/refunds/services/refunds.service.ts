@@ -2,6 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { InjectStripe } from "../../../decorators/inject-stripe";
 import { Stripe } from "stripe";
 
+/**
+ * @deprecated: Use @InjectStripe() instead
+ */
 @Injectable()
 export class StripeRefundsService {
     constructor(@InjectStripe() private readonly stripe: Stripe) {}
